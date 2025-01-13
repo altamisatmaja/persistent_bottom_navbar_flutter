@@ -161,11 +161,45 @@ class _BottomNavStyle15 extends StatelessWidget {
   @override
   Widget build(final BuildContext context) {
     final midIndex = (navBarEssentials.items.length / 2).floor();
+
+    final Color selectedItemActiveColor = navBarEssentials
+        .items[navBarEssentials.selectedIndex].activeColorPrimary;
+    final double itemWidth = (MediaQuery.of(context).size.width -
+            ((navBarEssentials.padding.left + navBarEssentials.padding.right) +
+                (navBarEssentials.margin.left +
+                    navBarEssentials.margin.right))) /
+        navBarEssentials.items.length;
     return SizedBox(
       width: double.infinity,
       height: navBarEssentials.navBarHeight,
       child: Stack(
         children: <Widget>[
+          Row(
+            children: <Widget>[
+              AnimatedContainer(
+                duration: navBarEssentials.itemAnimationProperties.duration,
+                curve: navBarEssentials.itemAnimationProperties.curve,
+                color: Colors.transparent,
+                width: navBarEssentials.selectedIndex == 0
+                    ? MediaQuery.of(context).size.width * 0.0
+                    : itemWidth * navBarEssentials.selectedIndex,
+                height: 4,
+              ),
+              Flexible(
+                child: AnimatedContainer(
+                  duration: navBarEssentials.itemAnimationProperties.duration,
+                  curve: navBarEssentials.itemAnimationProperties.curve,
+                  width: itemWidth,
+                  height: 4,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    color: selectedItemActiveColor,
+                    borderRadius: BorderRadius.circular(100),
+                  ),
+                ),
+              )
+            ],
+          ),
           ClipRRect(
             borderRadius: navBarDecoration!.borderRadius ?? BorderRadius.zero,
             child: BackdropFilter(
