@@ -79,40 +79,35 @@ class _BottomNavStyle3 extends StatelessWidget {
                   top: navBarEssentials.padding.top,  
                   bottom: navBarEssentials.padding.bottom),  
               child: Stack(  
+                alignment: Alignment.center,  
                 children: <Widget>[  
-                  Transform.translate(  
-                    offset: const Offset(0, -23),  
-                    child: Center(  
-                      child: Container(  
-                        width: 150,  
-                        height: height,  
-                        margin: const EdgeInsets.only(top: 2),  
-                        decoration: BoxDecoration(  
-                          shape: BoxShape.circle,  
-                          color: item.activeColorPrimary,  
-                          border:  
-                              Border.all(color: Colors.transparent, width: 5),  
-                        ),  
-                        child: Container(  
-                          alignment: Alignment.center,  
-                          height: height,  
-                          child: Column(  
-                            mainAxisAlignment: MainAxisAlignment.center,  
-                            children: <Widget>[  
-                              Expanded(  
-                                child: IconTheme(  
-                                  data: IconThemeData(  
-                                      size: item.iconSize,  
-                                      color: item.activeColorSecondary ??  
-                                          item.activeColorPrimary),  
-                                  child: isSelected  
-                                      ? item.icon  
-                                      : item.inactiveIcon ?? item.icon,  
-                                ),  
-                              ),  
-                            ],  
+                  Container(  
+                    width: 150,  
+                    height: height,  
+                    margin: const EdgeInsets.only(top: 2),  
+                    decoration: BoxDecoration(  
+                      shape: BoxShape.circle,  
+                      color: item.activeColorPrimary,  
+                      border: Border.all(color: Colors.transparent, width: 5),  
+                    ),  
+                    child: Container(  
+                      alignment: Alignment.center,  
+                      height: height,  
+                      child: Column(  
+                        mainAxisAlignment: MainAxisAlignment.center,  
+                        children: <Widget>[  
+                          Expanded(  
+                            child: IconTheme(  
+                              data: IconThemeData(  
+                                  size: item.iconSize,  
+                                  color: item.activeColorSecondary ??  
+                                      item.activeColorPrimary),  
+                              child: isSelected  
+                                  ? item.icon  
+                                  : item.inactiveIcon ?? item.icon,  
+                            ),  
                           ),  
-                        ),  
+                        ],  
                       ),  
                     ),  
                   ),  
@@ -193,42 +188,51 @@ class _BottomNavStyle3 extends StatelessWidget {
           Expanded(  
             child: Padding(  
               padding: const EdgeInsets.only(top: 5),  
-              child: Row(  
-                mainAxisAlignment: navBarEssentials.navBarItemsAlignment,  
-                children: navBarEssentials.items.map((final item) {  
-                  final int index = navBarEssentials.items.indexOf(item);  
-                  return Flexible(  
-                    child: GestureDetector(  
-                      onTap: () {  
-                        if (index != navBarEssentials.selectedIndex) {  
-                          navBarEssentials.items[index].iconAnimationController  
-                              ?.forward();  
-                          navBarEssentials.items[navBarEssentials.selectedIndex]  
-                              .iconAnimationController  
-                              ?.reverse();  
-                        }  
-                        if (navBarEssentials.items[index].onPressed != null) {  
-                          navBarEssentials.items[index].onPressed!(  
-                              navBarEssentials.selectedScreenBuildContext);  
-                        } else {  
-                          navBarEssentials.onItemSelected?.call(index);  
-                        }  
-                      },  
-                      child: Container(  
-                        color: Colors.transparent,  
-                        child: index == midIndex  
-                            ? _buildMiddleItem(  
-                                item,  
-                                navBarEssentials.selectedIndex == index,  
-                                navBarEssentials.navBarHeight)  
-                            : _buildItem(  
+              child: Stack(  
+                alignment: Alignment.center,  
+                children: [  
+                  Row(  
+                    mainAxisAlignment: navBarEssentials.navBarItemsAlignment,  
+                    children: navBarEssentials.items.map((final item) {  
+                      final int index = navBarEssentials.items.indexOf(item);  
+                      return Flexible(  
+                        child: GestureDetector(  
+                          onTap: () {  
+                            if (index != navBarEssentials.selectedIndex) {  
+                              navBarEssentials.items[index].iconAnimationController  
+                                  ?.forward();  
+                              navBarEssentials.items[navBarEssentials.selectedIndex]  
+                                  .iconAnimationController  
+                                  ?.reverse();  
+                            }  
+                            if (navBarEssentials.items[index].onPressed != null) {  
+                              navBarEssentials.items[index].onPressed!(  
+                                  navBarEssentials.selectedScreenBuildContext);  
+                            } else {  
+                              navBarEssentials.onItemSelected?.call(index);  
+                            }  
+                          },  
+                          child: Container(  
+                            color: Colors.transparent,  
+                            child: _buildItem(  
                                 item,  
                                 navBarEssentials.selectedIndex == index,  
                                 navBarEssentials.navBarHeight),  
-                      ),  
+                          ),  
+                        ),  
+                      );  
+                    }).toList(),  
+                  ),  
+                  // Middle item  
+                  if (navBarEssentials.items.length > 2) // Ensure there is a middle item  
+                    Positioned(  
+                      left: MediaQuery.of(context).size.width / 2 - 75, // Adjust position  
+                      child: _buildMiddleItem(  
+                          navBarEssentials.items[midIndex],  
+                          navBarEssentials.selectedIndex == midIndex,  
+                          navBarEssentials.navBarHeight),  
                     ),  
-                  );  
-                }).toList(),  
+                ],  
               ),  
             ),  
           ),  
