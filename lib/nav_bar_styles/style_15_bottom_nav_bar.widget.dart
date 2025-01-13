@@ -16,66 +16,60 @@ class _BottomNavStyle15 extends StatelessWidget {
           final double? height) =>
       navBarEssentials.navBarHeight == 0
           ? const SizedBox.shrink()
-          : Container(
-              width: 150,
-              height: height,
-              color: Colors.transparent,
-              padding: EdgeInsets.only(
-                  top: navBarEssentials.padding.top,
-                  bottom: navBarEssentials.padding.bottom),
-              child: Container(
+          : AnimatedContainer(
+              width: 100,
+              height: height! / 1.0,
+              duration: navBarEssentials.itemAnimationProperties.duration,
+              curve: navBarEssentials.itemAnimationProperties.curve,
+              alignment: Alignment.center,
+              child: AnimatedContainer(
+                duration: navBarEssentials.itemAnimationProperties.duration,
+                curve: navBarEssentials.itemAnimationProperties.curve,
                 alignment: Alignment.center,
-                height: height,
-                child: ListView(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  scrollDirection: Axis.horizontal,
+                height: height / 1.0,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Expanded(
-                          child: IconTheme(
-                            data: IconThemeData(
-                                size: item.iconSize,
-                                color: isSelected
-                                    ? (item.activeColorSecondary ??
-                                        item.activeColorPrimary)
-                                    : item.inactiveColorPrimary ??
-                                        item.activeColorPrimary),
-                            child: isSelected
-                                ? item.icon
-                                : item.inactiveIcon ?? item.icon,
+                    Expanded(
+                      child: IconTheme(
+                        data: IconThemeData(
+                            size: item.iconSize,
+                            color: isSelected
+                                ? (item.activeColorSecondary ??
+                                    item.activeColorPrimary)
+                                : item.inactiveColorPrimary ??
+                                    item.activeColorPrimary),
+                        child: isSelected
+                            ? item.icon
+                            : item.inactiveIcon ?? item.icon,
+                      ),
+                    ),
+                    if (item.title == null)
+                      const SizedBox.shrink()
+                    else
+                      Padding(
+                        padding: const EdgeInsets.only(top: 15),
+                        child: Material(
+                          type: MaterialType.transparency,
+                          child: DefaultTextStyle.merge(
+                            style: TextStyle(
+                                color: item.textStyle != null
+                                    ? item.textStyle!.apply(
+                                            color: isSelected
+                                                ? (item.activeColorSecondary ??
+                                                    item.activeColorPrimary)
+                                                : item.inactiveColorPrimary)
+                                        as Color?
+                                    : isSelected
+                                        ? (item.activeColorSecondary ??
+                                            item.activeColorPrimary)
+                                        : item.inactiveColorPrimary,
+                                fontWeight: FontWeight.w400,
+                                fontSize: 12),
+                            child: FittedBox(child: Text(item.title!)),
                           ),
                         ),
-                        if (item.title == null)
-                          const SizedBox.shrink()
-                        else
-                          Padding(
-                            padding: const EdgeInsets.only(top: 15),
-                            child: Material(
-                              type: MaterialType.transparency,
-                              child: FittedBox(
-                                  child: Text(
-                                item.title!,
-                                style: item.textStyle != null
-                                    ? (item.textStyle!.apply(
-                                        color: isSelected
-                                            ? (item.activeColorSecondary ??
-                                                item.activeColorPrimary)
-                                            : item.inactiveColorPrimary))
-                                    : TextStyle(
-                                        color: isSelected
-                                            ? (item.activeColorSecondary ??
-                                                item.activeColorPrimary)
-                                            : item.inactiveColorPrimary,
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: 12),
-                              )),
-                            ),
-                          )
-                      ],
-                    )
+                      ),
                   ],
                 ),
               ),

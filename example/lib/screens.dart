@@ -84,7 +84,6 @@ class MainScreen extends StatelessWidget {
                       showModalBottomSheet(
                         context: context,
                         backgroundColor: Colors.white,
-                        useRootNavigator: false,
                         builder: (final context) => Center(
                           child: ElevatedButton(
                             onPressed: () {
